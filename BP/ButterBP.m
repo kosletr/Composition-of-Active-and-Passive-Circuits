@@ -183,7 +183,7 @@ plot_transfer_function(inv(T_BP),[f_0,f_1,f_2,f_3,f_4])
 saveas(gcf,'pics/invBP.png');
 
 plot_transfer_function(1/10^(LowFreqGain/20)*T_BP,[f_0,f_1,f_2,f_3,f_4])
-saveas(gcf,'pics/checkSpecs.png');
+saveas(gcf,'pics/T_BP(zero_gain).png');
 
 %% Spectrum Calculation of Input
 f1=(w_0-(w_0-w_1)/2)/(2*pi)

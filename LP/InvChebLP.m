@@ -128,6 +128,8 @@ for i=1:ceil(n/2)
     end
 end
 
+plot_transfer_function(T_LP,[f_s,f_p])
+
 for i=1:ceil(n/2)
     plot_transfer_function(T{i},[f_s,f_p])
     name = ['pics/T',num2str(i),'.png'];
@@ -159,10 +161,10 @@ plot_transfer_function(inv(T_LP),[f_s,f_p])
 saveas(gcf,'pics/invLP.png');
 
 plot_transfer_function(1/10^(LowFreqGain/20)*T_LP,[f_s,f_p])
-saveas(gcf,'pics/checkSpecs.png');
+saveas(gcf,'pics/T_LP(zero_gain).png');
 
 %% Spectrum Calculation of Input
-input= @(t) 0.5*square(2*pi*2000*t,40)+0.5;
+input = @(t) 0.5*square(2*pi*2000*t,40)+0.5;
 spectrum(T_LP,input)
 
 function spectrum(sys,input)

@@ -126,6 +126,7 @@ end
 K=-10^(LowFreqGain/20)
 r1=1e4
 r2=-K*r1
+
 T_HP=tf(K,1);
 for i=1:ceil(n/2)
     T_HP=T{i}*T_HP;
@@ -148,7 +149,7 @@ plot_transfer_function(inv(T_HP),[f_s,f_p])
 saveas(gcf,'pics/invHP.png');
 
 plot_transfer_function(1/10^(LowFreqGain/20)*T_HP,[f_s,f_p])
-saveas(gcf,'pics/checkSpecs.png');
+saveas(gcf,'pics/T_HP(zero_gain).png');
 
 %% Spectrum Calculation of Input
 f1=0.4*w_s/(2*pi)

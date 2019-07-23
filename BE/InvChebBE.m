@@ -238,6 +238,7 @@ end
 K_g=-10^(LowFreqGain/20)/prod(g)
 r1=1e4
 r2=-K_g*r1
+
 T_BE=tf(K_g,1);
 for i=1:n
     T_BE=T{i}*T_BE;
@@ -260,7 +261,7 @@ plot_transfer_function(inv(T_BE),[f_0,f_1,f_2,f_3,f_4])
 saveas(gcf,'pics/invBP.png');
 
 plot_transfer_function(1/10^(LowFreqGain/20)*T_BE,[f_0,f_1,f_2,f_3,f_4])
-saveas(gcf,'pics/checkSpecs.png');
+saveas(gcf,'pics/T_BE(zero_gain).png');
 
 Max_Spec = -a_max+LowFreqGain
 Min_Spec = -a_min+LowFreqGain
