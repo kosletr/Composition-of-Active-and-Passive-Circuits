@@ -151,14 +151,27 @@ plot_transfer_function(1/10^(LowFreqGain/20)*T_HP,[f_s,f_p])
 saveas(gcf,'pics/checkSpecs.png');
 
 %% Spectrum Calculation of Input
-f1=0.4*w_s
-f2=0.9*w_s
-f3=1.4*w_p
-f4=2.4*w_p
-f5=4.5*w_p
+f1=0.4*w_s/(2*pi)
+f2=0.9*w_s/(2*pi)
+f3=1.4*w_p/(2*pi)
+f4=2.4*w_p/(2*pi)
+f5=4.5*w_p/(2*pi)
 
-input= @(t) cos(f1*t)+0.5*cos(f2*t)+cos(f3*t)+0.7*cos(f4*t)+0.5*cos(f5*t);
+input= @(t) cos(2*pi*f1*t)+0.5*cos(2*pi*f2*t)+cos(2*pi*f3*t)+0.7*cos(2*pi*f4*t)+0.5*cos(2*pi*f5*t);
 spectrum(T_HP,input)
+
+idealFundFreq = (calcFundamentalFreq([f1;f2;f3;f4;f5]))
+
+function fundFreq = calcFundamentalFreq(F)
+
+F = round(F);
+temp = F(end);
+for i=length(F)-1:-1:1
+    fundFreq = gcd(F(i),temp);
+    temp = fundFreq;
+end
+
+end
 
 function spectrum(sys,input)
 T = 1e-2;

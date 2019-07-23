@@ -246,7 +246,6 @@ end
 plot_transfer_function(T_BE,[f_0,f_1,f_2,f_3,f_4])
 saveas(gcf,'pics/T_BE.png');
 
-figure;
 figure('Position', get(0, 'Screensize'));
 for i=1:n
     bodemag(T{i});
@@ -276,14 +275,27 @@ Min_Spec = -a_min+LowFreqGain
 % plot_transfer_function(inv(testTF),[f_0,f_1,f_2,f_3,f_4])
 
 %% Spectrum Calculation of Input
-f1=w_0-(w_0-w_3)/2
-f2=w_0+(w_0+w_3)/2
-f3=0.5*w_1
-f4=2.4*w_2
-f5=3.5*w_2
+f1=(w_0-(w_0-w_3)/2)/(2*pi)
+f2=(w_0+(w_0+w_3)/2)/(2*pi)
+f3=0.5*w_1/(2*pi)
+f4=2.4*w_2/(2*pi)
+f5=3.5*w_2/(2*pi)
 
-input= @(t) 0.8*cos(f1*t)+cos(f2*t)+cos(f3*t)+0.8*cos(f4*t)+0.4*cos(f5*t);
+input= @(t) 0.8*cos(2*pi*f1*t)+cos(2*pi*f2*t)+cos(2*pi*f3*t)+0.8*cos(2*pi*f4*t)+0.4*cos(2*pi*f5*t);
 spectrum(T_BE,input)
+
+idealFundFreq = (calcFundamentalFreq([f1;f2;f3;f4;f5]))
+
+function fundFreq = calcFundamentalFreq(F)
+
+F = round(F);
+temp = F(end);
+for i=length(F)-1:-1:1
+    fundFreq = gcd(F(i),temp);
+    temp = fundFreq;
+end
+
+end
 
 function spectrum(sys,input)
 T = 1e-2;
