@@ -76,12 +76,11 @@ rad2deg(psi_k)
 %% Calculate Poles
 Sigma_k=(sinh(a)*cos(psi_k))';
 W_k=(cosh(a)*sin(psi_k))';
-wo_k=(sqrt(Sigma_k.^2+W_k.^2))
-Q_k=(wo_k./(2*Sigma_k))
+Wo_k=(sqrt(Sigma_k.^2+W_k.^2))
+Q_k=(Wo_k./(2*Sigma_k))
 
 p_k=(-Sigma_k+i*W_k)'
-Wo_k=1./wo_k
-tilde_Wo_k=W_s.*Wo_k
+tilde_Wo_k=W_s./Wo_k
 
 %% Calculate Zeros
 for k=1:floor(n/2)
@@ -135,7 +134,7 @@ for i=1:n
         G(i)=sqrt(E(i)^2-4*D(i)^2);
         Q_temp(i)=1/D(i)*sqrt((E(i)+G(i))/2);
         k(i)=-hat_Sigma_k(i)*Q_temp(i)/q_c;
-        W(i)=k(i)+sqrt(k(i)^2-1)
+        W(i)=k(i)+sqrt(k(i)^2-1);
         x(i)=(K(i)+sqrt(K(i)^2-4))/2;
         w_0k(2*i-1)=W(i)*w_0;
         w_0k(2*i)=1/W(i)*w_0;
@@ -157,7 +156,7 @@ x
 %w_0k=reshape(w_0k.',1,[])
 w_0k
 w_z
-Q=zeros(1,n)
+Q=zeros(1,n);
 for i=1:floor(n/2)
     Q(2*i-1)=Q_temp(i);
     Q(2*i)=Q_temp(i);
@@ -175,6 +174,8 @@ T=cell(n,1);
 
 for i=1:n
     if(w_z(i)/w_0k(i) <= 1) %HPN & Notch
+        %w_z(i)
+        %w_0k(i)
         k1(i)=(w_0k(i)/w_z(i))^2-1
         R_1old(i)=1;
         R_3old(i)=1;
@@ -198,6 +199,8 @@ for i=1:n
         T{i}=tf(Num{i},Den{i});
         g(i)=abs(freqresp(T{i},0));
     else % LPN
+        %w_z(i)
+        %w_0k(i)
         omega_z(i)=w_z(i)/w_0k(i)
         R_1old(i)=1;
         R_4old(i)=1;
@@ -216,9 +219,10 @@ for i=1:n
         R_3(i)=R_3old(i)*k_m(i)
         R_4(i)=R_4old(i)*k_m(i)
         R_5(i)=R_5old(i)*k_m(i)
-        k(i)=1/(1+omega_z(i)^2/(2*Q(i)^2))
+        kH(i)=1/(1+omega_z(i)^2/(2*Q(i)^2))
+        kL(i)=kH(i)*omega_z(i)^2
         
-        Num{i}=k(i)*[1,((k(i)-1)/k(i)*1/(R_1(i)*C(i))+2/(R_2(i)*C(i))+2/(R_5(i)*C(i))),(1/(R_1(i)*R_5(i)*C(i)^2)+1/(R_1(i)*R_2(i)*C(i)^2))];
+        Num{i}=kH(i)*[1,((kH(i)-1)/kH(i)*1/(R_1(i)*C(i))+2/(R_2(i)*C(i))+2/(R_5(i)*C(i))),(1/(R_1(i)*R_5(i)*C(i)^2)+1/(R_1(i)*R_2(i)*C(i)^2))];
         Den{i}=[1,2/(R_2(i)*C(i)),1/(R_1(i)*R_2(i)*C(i)^2)];
         T{i}=tf(Num{i},Den{i});
         g(i)=abs(freqresp(T{i},0));
@@ -254,7 +258,7 @@ legend('Unit 1','Unit 2','Unit 3','Unit 4','T_{BE}')
 saveas(gcf,'pics/bodeALL.png');
 
 plot_transfer_function(inv(T_BE),[f_0,f_1,f_2,f_3,f_4])
-saveas(gcf,'pics/invBP.png');
+saveas(gcf,'pics/invBE.png');
 
 plot_transfer_function(1/10^(LowFreqGain/20)*T_BE,[f_0,f_1,f_2,f_3,f_4])
 saveas(gcf,'pics/T_BE(zero_gain).png');

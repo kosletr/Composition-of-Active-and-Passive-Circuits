@@ -116,6 +116,7 @@ for i=1:ceil(n/2)
         T{i}=tf(N{i},D{i});
     end
 end
+T=circshift(T,1);
 
 for i=1:ceil(n/2)
     plot_transfer_function(T{i},[f_s,f_p])
