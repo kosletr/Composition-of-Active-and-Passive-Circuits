@@ -128,7 +128,6 @@ for i=1:ceil(n/2)
     end
 end
 
-plot_transfer_function(T_LP,[f_s,f_p])
 
 for i=1:ceil(n/2)
     plot_transfer_function(T{i},[f_s,f_p])
