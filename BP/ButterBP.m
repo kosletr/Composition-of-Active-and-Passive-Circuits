@@ -28,24 +28,6 @@ a_max=0.5+a4/36
 C_avail=0.1e-6
 LowFreqGain=10;
 
-%  f_1=700
-%  f_2=1428.571
-%  f_3=408.426
-%  f_4=2448.424
-% a_min=25
-% a_max=0.722
-% C_avail=0.1e-6
-% LowFreqGain=0
-
-%  f_1=750/(2*pi)
-%  f_2=1500/(2*pi)
-%  f_3=300/(2*pi)
-%  f_4=3750/(2*pi)
-% a_min=22
-% a_max=0.5
-% C_avail=0.1e-6
-% LowFreqGain=0
-
 %% Calculate bandwidth
 w_1=2*pi*f_1
 w_2=2*pi*f_2
@@ -148,16 +130,7 @@ end
 for i=1:n
     plot_transfer_function(T{i},[f_0,f_1,f_2,f_3,f_4])
     name = ['pics/T',num2str(i),'.png'];
-    saveas(gcf,name);
 end
-
-
-% for i = 1:n
-%     a(i)=1/g(i)
-%     Z_2(i)=1/a(i)
-%     Z_3(i)=1/(1-a(i))
-% end
-% gain=10^(LowFreqGain/20)*prod(a)
 
 gain=-10^(LowFreqGain/20)/prod(g)
 T_BP=tf(gain,1);
@@ -166,10 +139,9 @@ for i=1:n
 end
 
 plot_transfer_function(T_BP,[f_0,f_1,f_2,f_3,f_4])
-saveas(gcf,'pics/T_BP.png');
-    
 
-figure('Position', get(0, 'Screensize'));
+
+figure();
 for i=1:n
     bodemag(T{i});
     hold on;
@@ -177,13 +149,10 @@ end
 bodemag(T_BP);
 grid on;
 legend('Unit 1','Unit 2','Unit 3','Unit 4','T_{BP}')
-saveas(gcf,'pics/bodeALL.png');
 
 plot_transfer_function(inv(T_BP),[f_0,f_1,f_2,f_3,f_4])
-saveas(gcf,'pics/invBP.png');
 
 plot_transfer_function(1/10^(LowFreqGain/20)*T_BP,[f_0,f_1,f_2,f_3,f_4])
-saveas(gcf,'pics/T_BP(zero_gain).png');
 
 %% Spectrum Calculation of Input
 f1=(w_0-(w_0-w_1)/2)/(2*pi)
@@ -215,28 +184,25 @@ dt = 1/F_s;
 t = 0:dt:T-dt;
 
 input=input(t);
-figure('Position', get(0, 'Screensize'));
+figure();
 plot(t,input);
 axis([0 inf -0.5 1.5]);
 title('Input Signal');
 xlabel('Time in sec');
-saveas(gcf,'pics/input.png');
 
 y=lsim(sys,input,t);
-figure('Position', get(0, 'Screensize'));
+figure();
 plot(t,y);
 title('Output Signal');
 xlabel('Time in sec');
-saveas(gcf,'pics/output.png');
 
-figure('Position', get(0, 'Screensize'));
+figure();
 plot(t,input);
 hold on;
 plot(t,y);
 hold off;
 title('Input and Output sigmals');
 xlabel('Time in sec');
-saveas(gcf,'pics/inputOutput.png');
 
 Xf=fft(input);
 L=length(input);
@@ -247,23 +213,21 @@ P1(2:end-1) = 2*P1(2:end-1);
 f = F_s*(0:(L/2))/L;
 
 
-figure('Position', get(0, 'Screensize'));
+figure();
 plot(f,P1);
 axis([0.01 20000 0 inf]);
 title('FFT of Input Signal');
 xlabel('Time in sec');
 Yf=fft(y);
 L=length(y);
-saveas(gcf,'pics/FFTinput.png');
 
 P2 = abs(Yf/L);
 P1 = P2(1:L/2+1);
 P1(2:end-1) = 2*P1(2:end-1);
 f = F_s*(0:(L/2))/L;
-figure('Position', get(0, 'Screensize'));
+figure();
 plot(f,P1);
 axis([0.01 20000 0 inf]);
 title('FFT of Output Signal');
-saveas(gcf,'pics/FFToutput.png');
 
 end

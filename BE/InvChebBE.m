@@ -28,25 +28,6 @@ a_max=0.5+a4/18
 C_avail=0.01e-6
 LowFreqGain=10
 
-
-% f_1=1000/(2*pi)
-% f_2=4000/(2*pi)
-% f_3=1600/(2*pi)
-% f_4=2500/(2*pi)
-% a_min=25
-% a_max=1
-% C_avail=0.1e-6
-% LowFreqGain=0
-
-% f_1=3998.65/(2*pi)
-% f_2=39451.63/(2*pi)
-% f_3=8478/(2*pi)
-% f_4=18607.38/(2*pi)
-% a_min=23.88
-% a_max=0.88
-% C_avail=0.01e-6
-% LowFreqGain=5
-
 %% Calculate BW
 w_1=2*pi*f_1
 w_2=2*pi*f_2
@@ -153,7 +134,6 @@ k
 W
 K
 x
-%w_0k=reshape(w_0k.',1,[])
 w_0k
 w_z
 Q=zeros(1,n);
@@ -174,8 +154,6 @@ T=cell(n,1);
 
 for i=1:n
     if(w_z(i)/w_0k(i) <= 1) %HPN & Notch
-        %w_z(i)
-        %w_0k(i)
         k1(i)=(w_0k(i)/w_z(i))^2-1
         R_1old(i)=1;
         R_3old(i)=1;
@@ -199,8 +177,6 @@ for i=1:n
         T{i}=tf(Num{i},Den{i});
         g(i)=abs(freqresp(T{i},0));
     else % LPN
-        %w_z(i)
-        %w_0k(i)
         omega_z(i)=w_z(i)/w_0k(i)
         R_1old(i)=1;
         R_4old(i)=1;
@@ -232,7 +208,6 @@ end
 for i=1:n
     plot_transfer_function(T{i},[f_0,f_1,f_2,f_3,f_4])
     name = ['pics/T',num2str(i),'.png'];
-    saveas(gcf,name);
 end
 
 K_g=-10^(LowFreqGain/20)/prod(g)
@@ -245,35 +220,23 @@ for i=1:n
 end
 
 plot_transfer_function(T_BE,[f_0,f_1,f_2,f_3,f_4])
-saveas(gcf,'pics/T_BE.png');
 
-figure('Position', get(0, 'Screensize'));
+figure();
 for i=1:n
     bodemag(T{i});
     hold on;
 end
+
 bodemag(T_BE);
 grid on;
 legend('Unit 1','Unit 2','Unit 3','Unit 4','T_{BE}')
-saveas(gcf,'pics/bodeALL.png');
 
 plot_transfer_function(inv(T_BE),[f_0,f_1,f_2,f_3,f_4])
-saveas(gcf,'pics/invBE.png');
 
 plot_transfer_function(1/10^(LowFreqGain/20)*T_BE,[f_0,f_1,f_2,f_3,f_4])
-saveas(gcf,'pics/T_BE(zero_gain).png');
 
 Max_Spec = -a_max+LowFreqGain
 Min_Spec = -a_min+LowFreqGain
-
-% testTF=tf(10^(Gain/20),1);
-% for i=1:n
-%     Nu{i}=[1,0,w_z(i)^2];
-%     De{i}=[1,w_0k(i)/Q(i),w_0k(i)^2];
-%     testTF=testTF*tf(Nu{i},De{i});
-% end
-% plot_transfer_function(testTF,[f_0,f_1,f_2,f_3,f_4])
-% plot_transfer_function(inv(testTF),[f_0,f_1,f_2,f_3,f_4])
 
 %% Spectrum Calculation of Input
 f1=(w_0-(w_0-w_3)/2)/(2*pi)
@@ -305,28 +268,25 @@ dt = 1/F_s;
 t = 0:dt:T-dt;
 
 input=input(t);
-figure('Position', get(0, 'Screensize'));
+figure();
 plot(t,input);
 axis([0 inf -0.5 1.5]);
 title('Input Signal');
 xlabel('Time in sec');
-saveas(gcf,'pics/input.png');
 
 y=lsim(sys,input,t);
-figure('Position', get(0, 'Screensize'));
+figure();
 plot(t,y);
 title('Output Signal');
 xlabel('Time in sec');
-saveas(gcf,'pics/output.png');
 
-figure('Position', get(0, 'Screensize'));
+figure();
 plot(t,input);
 hold on;
 plot(t,y);
 hold off;
 title('Input and Output sigmals');
 xlabel('Time in sec');
-saveas(gcf,'pics/inputOutput.png');
 
 Xf=fft(input);
 L=length(input);
@@ -337,23 +297,21 @@ P1(2:end-1) = 2*P1(2:end-1);
 f = F_s*(0:(L/2))/L;
 
 
-figure('Position', get(0, 'Screensize'));
+figure();
 plot(f,P1);
 axis([0.01 20000 0 inf]);
 title('FFT of Input Signal');
 xlabel('Time in sec');
 Yf=fft(y);
 L=length(y);
-saveas(gcf,'pics/FFTinput.png');
 
 P2 = abs(Yf/L);
 P1 = P2(1:L/2+1);
 P1(2:end-1) = 2*P1(2:end-1);
 f = F_s*(0:(L/2))/L;
-figure('Position', get(0, 'Screensize'));
+figure();
 plot(f,P1);
 axis([0.01 20000 0 inf]);
 title('FFT of Output Signal');
-saveas(gcf,'pics/FFToutput.png');
 
 end

@@ -25,20 +25,6 @@ a_max=0.55+(max(1,a4)-5)/16
 C_avail=0.1e-6
 LowFreqGain=5
 
-% f_p=4000
-% f_s=8800
-% a_min=22.75
-% a_max=1
-% C_avail=0.1e-6
-% LowFreqGain=0
-
-% f_p=1000/(2*pi)
-% f_s=1400/(2*pi)
-% a_min=18
-% a_max=0.25
-% C_avail=0.1e-6
-% LowFreqGain=0
-
 %% Frequency Regularization
 w_p=2*pi*f_p
 w_s=2*pi*f_s
@@ -132,7 +118,6 @@ end
 for i=1:ceil(n/2)
     plot_transfer_function(T{i},[f_s,f_p])
     name = ['pics/T',num2str(i),'.png'];
-    saveas(gcf,name);
 end
 
 k=-10^(LowFreqGain/20)/prod(kL)
@@ -144,9 +129,8 @@ for i=1:ceil(n/2)
 end
 
 plot_transfer_function(T_LP,[f_s,f_p])
-saveas(gcf,'pics/T_LP.png');
 
-figure('Position', get(0, 'Screensize'));
+figure();
 for i=1:ceil(n/2)
     bodemag(T{i});
     hold on;
@@ -154,13 +138,10 @@ end
 bodemag(T_LP);
 grid on;
 legend('Unit 1','Unit 2','T_{LP}')
-saveas(gcf,'pics/bodeALL.png');
 
 plot_transfer_function(inv(T_LP),[f_s,f_p])
-saveas(gcf,'pics/invLP.png');
 
 plot_transfer_function(1/10^(LowFreqGain/20)*T_LP,[f_s,f_p])
-saveas(gcf,'pics/T_LP(zero_gain).png');
 
 %% Spectrum Calculation of Input
 input = @(t) 0.5*square(2*pi*2000*t,40)+0.5;
@@ -173,28 +154,25 @@ dt = 1/F_s;
 t = 0:dt:T-dt;
 
 input=input(t);
-figure('Position', get(0, 'Screensize'));
+figure();
 plot(t,input);
 axis([0 inf -0.5 1.5]);
 title('Input Signal');
 xlabel('Time in sec');
-saveas(gcf,'pics/input.png');
 
 y=lsim(sys,input,t);
-figure('Position', get(0, 'Screensize'));
+figure();
 plot(t,y);
 title('Output Signal');
 xlabel('Time in sec');
-saveas(gcf,'pics/output.png');
 
-figure('Position', get(0, 'Screensize'));
+figure();
 plot(t,input);
 hold on;
 plot(t,y);
 hold off;
 title('Input and Output sigmals');
 xlabel('Time in sec');
-saveas(gcf,'pics/inputOutput.png');
 
 Xf=fft(input);
 L=length(input);
@@ -205,23 +183,21 @@ P1(2:end-1) = 2*P1(2:end-1);
 f = F_s*(0:(L/2))/L;
 
 
-figure('Position', get(0, 'Screensize'));
+figure();
 plot(f,P1);
 axis([0.01 20000 0 inf]);
 title('FFT of Input Signal');
 xlabel('Time in sec');
 Yf=fft(y);
 L=length(y);
-saveas(gcf,'pics/FFTinput.png');
 
 P2 = abs(Yf/L);
 P1 = P2(1:L/2+1);
 P1(2:end-1) = 2*P1(2:end-1);
 f = F_s*(0:(L/2))/L;
-figure('Position', get(0, 'Screensize'));
+figure();
 plot(f,P1);
 axis([0.01 20000 0 inf]);
 title('FFT of Output Signal');
-saveas(gcf,'pics/FFToutput.png');
 
 end

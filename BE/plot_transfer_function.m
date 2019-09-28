@@ -7,7 +7,7 @@ function plot_transfer_function( tf, frequency_markers )
 %   Example:
 %       plot_transfer_function( tf([1000], [1 1000]), [10 1000 10000] );
 
-figure('Position', get(0, 'Screensize'));
+figure;
 x_space = logspace(1,5,5000); % 5000 points between 10^1 and 10^5
 x_space = 2 * pi * x_space; % to rad / sec
 [mag,~,wout] = bode(tf,x_space);
