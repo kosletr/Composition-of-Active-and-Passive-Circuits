@@ -12,10 +12,6 @@ This collection of scripts was created for the scope of an assignment in a Compo
  - a_min = 25 dB
  - LowFrequencyGain = 5 dB
  
- Low Pass Filter           |  Low Pass Circuit
-:-------------------------:|:-------------------------:
-![](https://github.com/kosletr/Composition-of-Active-and-Passive-Circuits/blob/master/LP/plots/T_LP.png)  |  ![](https://github.com/kosletr/Composition-of-Active-and-Passive-Circuits/blob/master/LP/plots/finalCircuit.jpg)
- 
 ![alt-text-1](https://github.com/kosletr/Composition-of-Active-and-Passive-Circuits/blob/master/LP/plots/T_LP.png "Low Pass Filter")
 ![alt-text-2](https://github.com/kosletr/Composition-of-Active-and-Passive-Circuits/blob/master/LP/plots/finalCircuit.jpg "Low Pass Circuit")
 
