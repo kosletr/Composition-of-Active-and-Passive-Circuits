@@ -55,4 +55,4 @@ This collection of scripts was created for the scope of an assignment in a Compo
 ![alt-text-8](https://github.com/kosletr/Composition-of-Active-and-Passive-Circuits/blob/master/HP/plots/finalCircuit.jpg "High Pass Circuit")
 
 ### Setup
-The provided code was created using MATLAB R2019a, however older MATLAB versions should work fine. All of the .m scripts provided, are  commented for higher readability and maintenance.
+The provided code was created using MATLAB R2019a and MULTISIM 14.0, however older software versions should work fine. All of the .m scripts provided, are  commented for higher readability and maintenance.
