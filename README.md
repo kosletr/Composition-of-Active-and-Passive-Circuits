@@ -12,6 +12,10 @@ This collection of scripts was created for the scope of an assignment in a Compo
  - a_min = 25 dB
  - LowFrequencyGain = 5 dB
  
+ Low Pass Filter           |  Low Pass Circuit
+:-------------------------:|:-------------------------:
+![](https://github.com/kosletr/Composition-of-Active-and-Passive-Circuits/blob/master/LP/plots/T_LP.png)  |  ![](https://github.com/kosletr/Composition-of-Active-and-Passive-Circuits/blob/master/LP/plots/finalCircuit.jpg)
+ 
 ![alt-text-1](https://github.com/kosletr/Composition-of-Active-and-Passive-Circuits/blob/master/LP/plots/T_LP.png "Low Pass Filter")
 ![alt-text-2](https://github.com/kosletr/Composition-of-Active-and-Passive-Circuits/blob/master/LP/plots/finalCircuit.jpg "Low Pass Circuit")
 
@@ -27,7 +31,7 @@ This collection of scripts was created for the scope of an assignment in a Compo
  - LowFrequencyGain = 10 dB
  
 ![alt-text-3](https://github.com/kosletr/Composition-of-Active-and-Passive-Circuits/blob/master/BP/plots/T_BP.png "Band Pass Filter")
-![alt-text-4](https://github.com/kosletr/Composition-of-Active-and-Passive-Circuits/blob/master/BP/plots/finalCircuit.jpg "Band Pass Circuit")
+![alt-text-4](https://github.com/kosletr/Composition-of-Active-and-Passive-Circuits/blob/master/BP/plots/FinalCircuit.jpg "Band Pass Circuit")
 
 
 #### Band Elimination Filter - Inverse Chebyshev
